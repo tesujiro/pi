@@ -1,5 +1,5 @@
 go:
-	go run main.go
+	go run pi_leibniz.go
 
 awk:
 	awk -f pi_leibniz.awk
