@@ -5,39 +5,43 @@ import (
 	"math/big"
 )
 
-func factorial(n *big.Float) *big.Float {
-	if n.Cmp(big.NewFloat(1)) <= 0 {
-		return big.NewFloat(1.0)
+func factorial(n *big.Int) *big.Int {
+	if n.Cmp(big.NewInt(1)) <= 0 {
+		return big.NewInt(1.0)
 	}
-	return new(big.Float).Mul(n, factorial(new(big.Float).Sub(n, big.NewFloat(1))))
+	return new(big.Int).Mul(n, factorial(new(big.Int).Sub(n, big.NewInt(1))))
 }
 
-func pow(x, y *big.Float) *big.Float {
-	if y.Cmp(big.NewFloat(0)) == 0 {
-		return big.NewFloat(1)
+func pow(x, y *big.Int) *big.Int {
+	if y.Cmp(big.NewInt(0)) == 0 {
+		return big.NewInt(1)
 	}
-	if y.Cmp(big.NewFloat(1)) <= 0 {
+	if y.Cmp(big.NewInt(1)) <= 0 {
 		return x
 	}
-	return new(big.Float).Mul(x, pow(x, new(big.Float).Sub(y, big.NewFloat(1))))
+	return new(big.Int).Mul(x, pow(x, new(big.Int).Sub(y, big.NewInt(1))))
 }
 
 func main() {
-	var n, qPi, den, num, ram *big.Float
+	var (
+		qPi, ram    *big.Float
+		n, den, num *big.Int
+	)
+	const prec = 500
 	qPi = big.NewFloat(0)
-	qPi.SetPrec(300)
-	den = new(big.Float)
-	den.SetPrec(300)
-	num = new(big.Float)
-	num.SetPrec(300)
+	qPi.SetPrec(prec)
 	ram = new(big.Float)
-	ram.SetPrec(300)
-	for n = big.NewFloat(0); ; n = new(big.Float).Add(n, big.NewFloat(1)) {
-		den.Mul(pow(big.NewFloat(-1), n), new(big.Float).Mul(factorial(new(big.Float).Mul(big.NewFloat(4), n)), new(big.Float).Add(big.NewFloat(1123), new(big.Float).Mul(big.NewFloat(21460), n))))
-		num.Mul(pow(big.NewFloat(882), new(big.Float).Add(new(big.Float).Mul(big.NewFloat(2), n), big.NewFloat(1))), pow(new(big.Float).Mul(pow(big.NewFloat(4), n), factorial(n)), big.NewFloat(4)))
-		ram.Quo(den, num)
+	ram.SetPrec(prec)
+	den = new(big.Int)
+	num = new(big.Int)
+	for n = big.NewInt(0); ; n = new(big.Int).Add(n, big.NewInt(1)) {
+		den.Mul(pow(big.NewInt(-1), n), new(big.Int).Mul(factorial(new(big.Int).Mul(big.NewInt(4), n)), new(big.Int).Add(big.NewInt(1123), new(big.Int).Mul(big.NewInt(21460), n))))
+		num.Mul(pow(big.NewInt(882), new(big.Int).Add(new(big.Int).Mul(big.NewInt(2), n), big.NewInt(1))), pow(new(big.Int).Mul(pow(big.NewInt(4), n), factorial(n)), big.NewInt(4)))
+		denF := new(big.Float).SetInt(den)
+		numF := new(big.Float).SetInt(num)
+		ram.Quo(denF, numF)
 		qPi.Add(qPi, ram)
-		//fmt.Printf("%v:\t%v / %v -> %v\t%v\n", n, den, num, ram, 4/qPi)
-		fmt.Printf("%v:\t%.50g\n", n, new(big.Float).Quo(big.NewFloat(4), qPi))
+		pi := new(big.Float).Quo(big.NewFloat(4), qPi)
+		fmt.Printf("%v:\t%.300g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
 	}
 }
