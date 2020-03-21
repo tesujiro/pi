@@ -23,17 +23,25 @@ func pow(x, y *big.Int) *big.Int {
 }
 
 func main() {
+	var i uint
+	for i = 1; ; i++ {
+		pi(i)
+	}
+}
+
+//func pi(prec int) (int, *big.Float) {
+func pi(prec uint) {
 	var (
-		qPi, ram    *big.Float
-		n, den, num *big.Int
+		pi, prev_pi, qPi, ram *big.Float
+		n, den, num           *big.Int
 	)
-	const prec = 500
 	qPi = big.NewFloat(0)
 	qPi.SetPrec(prec)
 	ram = new(big.Float)
 	ram.SetPrec(prec)
 	den = new(big.Int)
 	num = new(big.Int)
+	prev_pi = new(big.Float)
 	for n = big.NewInt(0); ; n = new(big.Int).Add(n, big.NewInt(1)) {
 		den.Mul(pow(big.NewInt(-1), n), new(big.Int).Mul(factorial(new(big.Int).Mul(big.NewInt(4), n)), new(big.Int).Add(big.NewInt(1123), new(big.Int).Mul(big.NewInt(21460), n))))
 		num.Mul(pow(big.NewInt(882), new(big.Int).Add(new(big.Int).Mul(big.NewInt(2), n), big.NewInt(1))), pow(new(big.Int).Mul(pow(big.NewInt(4), n), factorial(n)), big.NewInt(4)))
@@ -41,7 +49,12 @@ func main() {
 		numF := new(big.Float).SetInt(num)
 		ram.Quo(denF, numF)
 		qPi.Add(qPi, ram)
-		pi := new(big.Float).Quo(big.NewFloat(4), qPi)
-		fmt.Printf("%v:\t%.300g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
+		pi = new(big.Float).Quo(big.NewFloat(4), qPi)
+		if pi.Cmp(prev_pi) == 0 {
+			fmt.Printf("%v:\t%.10000g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
+			return
+		} else {
+			prev_pi = pi
+		}
 	}
 }
