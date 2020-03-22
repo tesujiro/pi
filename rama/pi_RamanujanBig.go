@@ -91,7 +91,7 @@ func pi(prec uint) {
 		qPi.Add(qPi, ram)
 		pi = new(big.Float).Quo(float_4, qPi)
 		if pi.Cmp(prev_pi) == 0 {
-			fmt.Printf("%v:\t%.10000g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
+			fmt.Printf("%v:\t%."+fmt.Sprintf("%v", prec)+"g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
 			return
 		} else {
 			prev_pi = pi
