@@ -8,6 +8,9 @@ import (
 	"github.com/pkg/profile"
 )
 
+//var no_cache = true
+var no_cache = false
+
 var (
 	c_factorial map[*big.Int]*big.Int
 	int_minus1  *big.Int   = big.NewInt(-1)
@@ -33,6 +36,9 @@ func factorial(n *big.Int) *big.Int {
 }
 
 func factorial_cached(n *big.Int) *big.Int {
+	if no_cache {
+		return factorial(n)
+	}
 	if v, ok := c_factorial[n]; ok {
 		return v
 	}
