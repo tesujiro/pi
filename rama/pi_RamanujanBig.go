@@ -59,18 +59,21 @@ func main() {
 
 	flag.Parse()
 	if *prec != 0 {
-		pi(*prec)
+		pr(pi(*prec))
 		return
 	}
 	var i uint
 	for i = 1; ; i++ {
-		pi(i)
+		pr(pi(i))
 	}
 
 }
 
-//func pi(prec int) (int, *big.Float) {
-func pi(prec uint) {
+func pr(prec uint, n *big.Int, pi *big.Float) {
+	fmt.Printf("%v:\t%."+fmt.Sprintf("%v", prec)+"g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
+}
+
+func pi(prec uint) (uint, *big.Int, *big.Float) {
 	var (
 		pi, prev_pi, qPi, ram *big.Float
 		n, den, num           *big.Int
@@ -91,8 +94,8 @@ func pi(prec uint) {
 		qPi.Add(qPi, ram)
 		pi = new(big.Float).Quo(float_4, qPi)
 		if pi.Cmp(prev_pi) == 0 {
-			fmt.Printf("%v:\t%."+fmt.Sprintf("%v", prec)+"g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
-			return
+			//fmt.Printf("%v:\t%."+fmt.Sprintf("%v", prec)+"g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
+			return prec, n, pi
 		} else {
 			prev_pi = pi
 		}

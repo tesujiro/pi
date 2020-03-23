@@ -10,3 +10,6 @@ build:
 prof:
 	go tool pprof --svg ./pi_RamanujanBig ./cpu.pprof > ./cpu.svg
 
+bench:
+	go test -bench . -benchmem -test.timeout 60m
+
