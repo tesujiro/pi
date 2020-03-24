@@ -12,7 +12,7 @@ import (
 var no_cache = false
 
 var (
-	c_factorial map[*big.Int]*big.Int
+	c_factorial map[string]*big.Int
 	int_minus1  *big.Int   = big.NewInt(-1)
 	int_0       *big.Int   = big.NewInt(0)
 	int_1       *big.Int   = big.NewInt(1)
@@ -25,25 +25,25 @@ var (
 )
 
 func init() {
-	c_factorial = make(map[*big.Int]*big.Int)
+	c_factorial = make(map[string]*big.Int)
 }
 
 func factorial(n *big.Int) *big.Int {
 	if n.Cmp(int_1) <= 0 {
 		return int_1
 	}
-	return new(big.Int).Mul(n, factorial(new(big.Int).Sub(n, int_1)))
+	return new(big.Int).Mul(n, factorial_cached(new(big.Int).Sub(n, int_1)))
 }
 
 func factorial_cached(n *big.Int) *big.Int {
 	if no_cache {
 		return factorial(n)
 	}
-	if v, ok := c_factorial[n]; ok {
+	if v, ok := c_factorial[n.String()]; ok {
 		return v
 	}
 	v := factorial(n)
-	c_factorial[n] = v
+	c_factorial[n.String()] = v
 	return (v)
 }
 
