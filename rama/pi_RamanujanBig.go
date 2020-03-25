@@ -48,13 +48,7 @@ func factorial_cached(n *big.Int) *big.Int {
 }
 
 func pow(x, y *big.Int) *big.Int {
-	if y.Cmp(int_0) == 0 {
-		return int_1
-	}
-	if y.Cmp(int_1) <= 0 {
-		return x
-	}
-	return new(big.Int).Mul(x, pow(x, new(big.Int).Sub(y, int_1)))
+	return new(big.Int).Exp(x, y, nil)
 }
 
 func main() {
@@ -91,7 +85,7 @@ func pi(prec uint) (uint, *big.Int, *big.Float) {
 	den = new(big.Int)
 	num = new(big.Int)
 	prev_pi = new(big.Float)
-	for n = int_0; ; n = new(big.Int).Add(n, int_1) {
+	for n = int_0; ; n = new(big.Int).Add(n, int_4) {
 		den.Mul(pow(int_minus1, n), new(big.Int).Mul(factorial_cached(new(big.Int).Mul(int_4, n)), new(big.Int).Add(int_1123, new(big.Int).Mul(int_21460, n))))
 		num.Mul(pow(int_882, new(big.Int).Add(new(big.Int).Mul(int_2, n), int_1)), pow(new(big.Int).Mul(pow(int_4, n), factorial_cached(n)), int_4))
 		denF := new(big.Float).SetInt(den)
