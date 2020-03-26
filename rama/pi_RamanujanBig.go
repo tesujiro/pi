@@ -19,8 +19,10 @@ var (
 	int_2       *big.Int   = big.NewInt(2)
 	int_4       *big.Int   = big.NewInt(4)
 	int_882     *big.Int   = big.NewInt(882)
+	int_1024    *big.Int   = big.NewInt(1024)
 	int_1123    *big.Int   = big.NewInt(1123)
 	int_21460   *big.Int   = big.NewInt(21460)
+	float_0     *big.Float = big.NewFloat(0)
 	float_4     *big.Float = big.NewFloat(4)
 )
 
@@ -76,16 +78,19 @@ func pr(prec uint, n *big.Int, pi *big.Float) {
 func pi(prec uint) (uint, *big.Int, *big.Float) {
 	var (
 		pi, prev_pi, qPi, ram *big.Float
-		n, den, num           *big.Int
+		//pi, prev_pi, ram *big.Float
+		n, den, num *big.Int
 	)
 	qPi = big.NewFloat(0)
 	qPi.SetPrec(prec)
+	//pi = big.NewFloat(0)
+	//pi.SetPrec(prec)
 	ram = new(big.Float)
 	ram.SetPrec(prec)
 	den = new(big.Int)
 	num = new(big.Int)
 	prev_pi = new(big.Float)
-	for n = int_0; ; n = new(big.Int).Add(n, int_4) {
+	for n = int_0; ; n = new(big.Int).Add(n, int_1) {
 		den.Mul(pow(int_minus1, n), new(big.Int).Mul(factorial_cached(new(big.Int).Mul(int_4, n)), new(big.Int).Add(int_1123, new(big.Int).Mul(int_21460, n))))
 		num.Mul(pow(int_882, new(big.Int).Add(new(big.Int).Mul(int_2, n), int_1)), pow(new(big.Int).Mul(pow(int_4, n), factorial_cached(n)), int_4))
 		denF := new(big.Float).SetInt(den)
@@ -93,6 +98,8 @@ func pi(prec uint) (uint, *big.Int, *big.Float) {
 		ram.Quo(denF, numF)
 		qPi.Add(qPi, ram)
 		pi = new(big.Float).Quo(float_4, qPi)
+		//delta := new(big.Float).Quo(new(big.Float).Mul(float_4, denF), numF)
+		//pi.Add(pi, delta)
 		if pi.Cmp(prev_pi) == 0 {
 			//fmt.Printf("%v:\t%."+fmt.Sprintf("%v", prec)+"g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
 			return prec, n, pi
