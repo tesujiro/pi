@@ -80,11 +80,12 @@ func pi(prec uint) (uint, *big.Int, *big.Float) {
 	)
 	qPi = big.NewFloat(0)
 	qPi.SetPrec(prec)
+	prev_pi = new(big.Float)
+	prev_pi.SetPrec(prec)
 	ram = new(big.Float)
 	ram.SetPrec(prec)
 	den = new(big.Int)
 	num = new(big.Int)
-	prev_pi = new(big.Float)
 	for n = int_0; ; n = new(big.Int).Add(n, int_1) {
 		den.Mul(pow(int_minus1, n), new(big.Int).Mul(factorial_cached(new(big.Int).Mul(int_4, n)), new(big.Int).Add(int_1123, new(big.Int).Mul(int_21460, n))))
 		num.Mul(pow(int_882, new(big.Int).Add(new(big.Int).Mul(int_2, n), int_1)), pow(new(big.Int).Mul(pow(int_4, n), factorial_cached(n)), int_4))
