@@ -19,7 +19,6 @@ var (
 	int_2       *big.Int   = big.NewInt(2)
 	int_4       *big.Int   = big.NewInt(4)
 	int_882     *big.Int   = big.NewInt(882)
-	int_1024    *big.Int   = big.NewInt(1024)
 	int_1123    *big.Int   = big.NewInt(1123)
 	int_21460   *big.Int   = big.NewInt(21460)
 	float_0     *big.Float = big.NewFloat(0)
@@ -68,7 +67,6 @@ func main() {
 	for i = 1; ; i++ {
 		pr(pi(i))
 	}
-
 }
 
 func pr(prec uint, n *big.Int, pi *big.Float) {
@@ -78,13 +76,10 @@ func pr(prec uint, n *big.Int, pi *big.Float) {
 func pi(prec uint) (uint, *big.Int, *big.Float) {
 	var (
 		pi, prev_pi, qPi, ram *big.Float
-		//pi, prev_pi, ram *big.Float
-		n, den, num *big.Int
+		n, den, num           *big.Int
 	)
 	qPi = big.NewFloat(0)
 	qPi.SetPrec(prec)
-	//pi = big.NewFloat(0)
-	//pi.SetPrec(prec)
 	ram = new(big.Float)
 	ram.SetPrec(prec)
 	den = new(big.Int)
@@ -98,10 +93,7 @@ func pi(prec uint) (uint, *big.Int, *big.Float) {
 		ram.Quo(denF, numF)
 		qPi.Add(qPi, ram)
 		pi = new(big.Float).Quo(float_4, qPi)
-		//delta := new(big.Float).Quo(new(big.Float).Mul(float_4, denF), numF)
-		//pi.Add(pi, delta)
 		if pi.Cmp(prev_pi) == 0 {
-			//fmt.Printf("%v:\t%."+fmt.Sprintf("%v", prec)+"g\tprec=%v\tacc=%v\n", n, pi, pi.Prec(), pi.Acc())
 			return prec, n, pi
 		} else {
 			prev_pi = pi
