@@ -10,7 +10,7 @@ func main() {
 	for {
 		rx := rand.Float64()
 		ry := rand.Float64()
-		if rx*rx+ry*ry < 1 {
+		if rx*rx+ry*ry <= 1 {
 			i++
 		} else {
 			o++
